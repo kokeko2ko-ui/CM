@@ -37,3 +37,22 @@ pip install -U yt-dlp        # 必須
 
 保存した `mp4` / `jpg` / `png` を**チャットに直接アップロード**すれば、
 モーションデザインスキルの素材として使えます。
+
+---
+
+# 動画書き出し（Vrew の MP3 + SRT）
+
+```bash
+python3 tools/render_video.py voice.mp3 subs.srt                 # 黒背景 1920x1080 → output.mp4
+python3 tools/render_video.py voice.mp3 subs.srt --bg ./clips    # 画像/動画フォルダを均等配分で敷く
+python3 tools/render_video.py voice.mp3 subs.srt --check         # 音声と字幕の尺だけ検証
+```
+
+MP3 が通らない問題への対策を組み込み済み:
+
+- 日本語・空白を含むパスでも動くよう、ASCII 名の一時フォルダへコピーして処理
+- MP3 は一度 44.1kHz ステレオ WAV に正規化（VBR・ID3・ヘッダ不良を吸収）
+- 音声と SRT の尺が 5 秒以上ずれたら警告
+- 日本語フォントを自動検出（Noto Sans CJK JP / ヒラギノ / 游ゴシック / メイリオ 等）
+
+必要: `ffmpeg`（libass 付き。`brew install ffmpeg` / `sudo apt install ffmpeg`）
