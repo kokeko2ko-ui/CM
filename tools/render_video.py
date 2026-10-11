@@ -26,7 +26,7 @@ def die(msg):
 
 
 def run(cmd):
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if r.returncode:
         die(f"{cmd[0]} が失敗しました\n{r.stderr[-1500:]}")
     return r.stdout
@@ -49,9 +49,9 @@ def srt_end(path):
 
 def pick_font():
     try:
-        have = subprocess.run(["fc-list", ":", "family"], capture_output=True, text=True).stdout
+        have = subprocess.run(["fc-list", ":", "family"], capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
     except FileNotFoundError:
-        return "Noto Sans CJK JP"
+        return "Yu Gothic" if sys.platform == "win32" else "Noto Sans CJK JP"
     for f in FONTS:
         if f.lower() in have.lower():
             return f
@@ -127,7 +127,7 @@ def main():
                             "-vf", f"subtitles=subs.srt:force_style='{style}'",
                             "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
                             "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(out)],
-                           cwd=work, capture_output=True, text=True)
+                           cwd=work, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if r.returncode:
             die("書き出しに失敗しました\n" + r.stderr[-1500:])
         print(f"完了: {out} ({duration(out):.2f}s)")
