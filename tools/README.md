@@ -56,3 +56,19 @@ MP3 が通らない問題への対策を組み込み済み:
 - 日本語フォントを自動検出（Noto Sans CJK JP / ヒラギノ / 游ゴシック / メイリオ 等）
 
 必要: `ffmpeg`（libass 付き。`brew install ffmpeg` / `sudo apt install ffmpeg`）
+
+---
+
+# 第51作を画像つきで書き出す（Windows）
+
+別セッションで作った my-project の動画づくり（44場面の画像・クロスフェード・字幕）を、
+Vrew の MP3 / SRT からお手元で再現するスクリプト。
+
+```powershell
+cd C:\Users\kokek\Downloads\CM
+git pull
+powershell -ExecutionPolicy Bypass -File tools\build_ep51_windows.ps1 `
+  -Mp3 "<MP3のパス>" -Srt "<SRTのパス>" -Out "D:\codex kandou-move\outputs" -Mode preview
+```
+
+`-Mode preview`（960x540・軽い）で確認してから、`-Mode final`（1920x1080）で本番。
